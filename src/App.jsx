@@ -12,7 +12,7 @@ export default function App() {
     <>
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/wallet" element={<Wallet />} />
+        <Route path="/wallet/:walletId" element={<Wallet />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

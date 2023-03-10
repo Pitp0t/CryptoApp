@@ -1,0 +1,10 @@
+{
+  "id": 1,
+  "name": "a",
+  "activos": ["BTC", "ETH"],
+  "initialUsd": 2000,
+  "transactions": [
+    { "id": 1, "fecha": "20/09/2023 18:54hs", "venta": true, "type": "BTC", "value": 0.2 },
+    { "id": 2, "fecha": "20/09/2023 18:54hs", "venta": true, "type": "ETH", "value": 0.2 }
+  ]
+}

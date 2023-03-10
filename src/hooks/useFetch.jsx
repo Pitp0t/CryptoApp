@@ -22,5 +22,6 @@ export default function useFetch() {
   return {
     getCryptoData,
     cryptoData,
+    setCryptoData,
   };
 }

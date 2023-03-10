@@ -8,9 +8,16 @@ export default function Intercambio() {
     getCryptoData();
   }, []);
 
-  function preventDefault(e) {
-    return e.preventDefault;
+  function handleSubmit(e) {
+    e.preventDefault();
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+    const formattedDate = `${date} ${time}`;
+    console.log(formattedDate);
   }
+
+  function calcTotal() {}
 
   return (
     <div className="bg-white rounded-lg p-10 my-5 flex flex-col gap-10">
@@ -25,14 +32,14 @@ export default function Intercambio() {
         </button>
       </div>
       <form className="flex flex-col justify-center gap-10 items-center ">
-        <div class="form-control form-select w-full">
-          <div class="input-group">
-            <select class="select select-bordered w-full">
+        <div className="form-control form-select w-full">
+          <div className="input-group">
+            <select className="select select-bordered w-full">
               <option disabled selected>
                 Pick category
               </option>
               {cryptoData.map((valor) => {
-                return <option>{valor.name}</option>;
+                return <option key={valor.id}>{valor.name}</option>;
               })}
             </select>
           </div>
@@ -48,7 +55,7 @@ export default function Intercambio() {
           </label>
         </div>
         <h2>Total : 1400$</h2>
-        <button onClick={preventDefault} className="btn gap-2">
+        <button type="button " onClick={handleSubmit} className="btn gap-2">
           <box-icon color="#ffffff" name="left-arrow-circle"></box-icon>
           Comprar
         </button>
