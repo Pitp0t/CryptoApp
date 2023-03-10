@@ -2,21 +2,16 @@ import React, { useContext, useEffect } from "react";
 import Transaccion from "../compontents/Transaccion";
 import Intercambio from "../compontents/Intercambio";
 import { WalletContext } from "../context/WalletContext";
-
 import { useParams } from "react-router-dom";
 
 export default function Wallet() {
   const { carterasCreada } = useContext(WalletContext);
   const { walletId } = useParams();
-
-  console.log(carterasCreada);
-
   const singleWallet = carterasCreada.filter((valor) => valor.id === walletId);
-  console.log(singleWallet);
 
   return (
     <>
-      <div className="bg-[#D9D9D9]  mx-auto my-20  rounded-lg p-0 md:p-10 md:max-w-[1280px] ">
+      <div className="border-2  mx-auto my-20  rounded-lg p-5 md:max-w-[700px] ">
         <div className=" flex justify-between bg-white rounded-lg p-10 items-center flex-col md:flex-row text-center md:text-left gap-10">
           <div className="flex flex-col gap-2">
             <h2>Balance Total</h2>
@@ -31,12 +26,9 @@ export default function Wallet() {
         </div>
         <Intercambio />
         <div className=" rounded-lg ">
-          <Transaccion />
-          <Transaccion />
-          <Transaccion />
-          <Transaccion />
-          <Transaccion />
-          <Transaccion />
+          {singleWallet[0].transactions.map((valor) => {
+            return <Transaccion walletId={walletId} id={valor.id} fecha={valor.fecha} venta={valor.venta} />;
+          })}
         </div>
       </div>
     </>

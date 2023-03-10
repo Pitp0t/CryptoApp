@@ -16,18 +16,33 @@ const WalletPorvider = (props) => {
       id: nanoid(),
       activos: ["BTC", "ETH"],
       initialUsd: 2000,
-      transactions: [],
+      transactions: [
+        { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: true, type: "BTC", value: 0.2 },
+        { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: false, type: "ETH", value: 0.2 },
+      ],
     };
     setCarterascreadas((prev) => [...prev, newWallet]);
   }
 
-  const deleteWallet = (id) => {
-    console.log(id);
+  function deleteWallet(id) {
     const filteredItems = carterasCreada.filter((valor) => valor.id !== id);
     setCarterascreadas(filteredItems);
-  };
+  }
 
-  return <WalletContext.Provider value={{ carterasCreada, deleteWallet, createWallet }}>{props.children}</WalletContext.Provider>;
+  function deleteTransaction(walletId, transactionId) {
+    const updatedWallets = carterasCreada.map((wallet) => {
+      if (wallet.id === walletId) {
+        const updatedTransactions = wallet.transactions.filter((transaction) => transaction.id !== transactionId);
+        return { ...wallet, transactions: updatedTransactions };
+      }
+      return wallet;
+    });
+
+    console.log(updatedWallets);
+    setCarterascreadas(updatedWallets);
+  }
+
+  return <WalletContext.Provider value={{ carterasCreada, deleteWallet, createWallet, deleteTransaction }}>{props.children}</WalletContext.Provider>;
 };
 
 export default WalletPorvider;
