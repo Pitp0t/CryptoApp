@@ -40,8 +40,9 @@ const WalletPorvider = (props) => {
   }
 
   function comprar(walletId) {
-    if (!selectedCoinData) return alert("Select coin");
-    if (!value) return alert("Select Value");
+    if (!selectedCoinData) return alert("Selecciona una moneda");
+    if (value < 0) return alert("El valor debe ser mayor a 0");
+    if (!value) return alert("Selecciona un valor");
 
     const now = new Date();
     const date = now.toLocaleDateString();
@@ -62,13 +63,14 @@ const WalletPorvider = (props) => {
       return wallet;
     });
 
-    setValue();
+    setValue(0);
     setSelectedCoinData();
     setCarterascreadas(updatedWallets);
   }
 
   function vender(walletId) {
     if (!selectedCoinData) return alert("Select coin");
+    if (value < 0) return alert("El valor debe ser mayor a 0");
     if (!value) return alert("Select Value");
     const now = new Date();
     const date = now.toLocaleDateString();
@@ -83,7 +85,7 @@ const WalletPorvider = (props) => {
         const allPreviousTransaction = wallet.transactions;
         const updatedTransactions = [
           ...allPreviousTransaction,
-          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor.toFixed(2) },
+          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: -calculoMonedaValor.toFixed(2) },
         ];
         return { ...wallet, transactions: updatedTransactions };
       }
@@ -97,7 +99,9 @@ const WalletPorvider = (props) => {
   function editTransactions() {}
 
   return (
-    <WalletContext.Provider value={{ carterasCreada, deleteWallet, createWallet, deleteTransaction, setSelectedCoinData, setValue, comprar, vender }}>
+    <WalletContext.Provider
+      value={{ carterasCreada, deleteWallet, createWallet, deleteTransaction, selectedCoinData, setSelectedCoinData, setValue, comprar, vender, value }}
+    >
       {props.children}
     </WalletContext.Provider>
   );

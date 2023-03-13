@@ -12,17 +12,25 @@ export default function Wallet() {
 
   return (
     <>
-      <div className=" mx-auto my-20  rounded-lg px-2 md:p-5 md:border-2 md:max-w-[700px] ">
+      <div className=" mx-auto my-20  rounded-lg px-2 md:p-5  md:max-w-[700px] ">
         <Intercambio />
-        <div className="flex- gap-10">
-          <button onClick={() => comprar(walletId)} className="btn bg-[#6c7b904] w-1/2">
-            COMPRAR
+        <div className="flex gap-4 ">
+          <button
+            onClick={() => comprar(walletId)}
+            className="flex gap-5 justify-center items-center py-3 font-bold  bg-[#faa018] w-full rounded-xl shadow-md hover:ring-2  ring-[#faa018]  text-slate-200 hover:text-slate-100 transition-all"
+          >
+            <h2>COMPRAR</h2>
+            <box-icon name="up-arrow-circle" color="#ffffff"></box-icon>
           </button>
-          <button onClick={() => vender(walletId)} className="btn bg-[#6c7b904] w-1/2">
-            VENDER
+          <button
+            onClick={() => vender(walletId)}
+            className=" flex gap-5 justify-center items-center py-3 font-bold  bg-[#faa018] w-full  rounded-xl shadow-md hover:ring-2   ring-[#faa018]  text-slate-200 hover:text-slate-100 transition-all"
+          >
+            <h2>VENDER</h2>
+            <box-icon name="down-arrow-circle" rotate="180" color="#ffffff"></box-icon>
           </button>
         </div>
-        <div className=" rounded-lg ">
+        <div className=" mt-10 ">
           {singleWallet[0].transactions.map((valor) => {
             return (
               <Transaccion key={valor.id} walletId={walletId} id={valor.id} fecha={valor.fecha} type={valor.type} venta={valor.venta} value={valor.value} />

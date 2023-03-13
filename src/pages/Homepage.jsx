@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
-import { nanoid } from "nanoid";
+import Loading from "../compontents/Loading";
+import Error from "../compontents/Error";
 import useFetch from "../hooks/useFetch";
 import { WalletContext } from "../context/WalletContext";
 import Cartera from "../compontents/Cartera";
@@ -12,31 +13,17 @@ export default function Homepage() {
     getCryptoData();
   }, []);
 
-  if (error)
-    return (
-      <div className="flex flex-col h-[60vh] justify-center items-center gap-5 text-center">
-        <div>
-          <h2 className="text-xl font-bold">Error</h2>
-          <h2>{error} :(</h2>
-        </div>
-      </div>
-    );
-
-  if (cryptoData.length === 0)
-    return (
-      <div className="flex flex-col h-[60vh] justify-center items-center gap-5 text-center">
-        <div>
-          <h2 className="text-xl font-bold">Loading</h2>
-        </div>
-        <button className="btn btn-square loading"></button>;
-      </div>
-    );
+  if (error) return <Error error={error} />;
+  if (cryptoData.length === 0) return <Loading />;
 
   return (
-    <div className="max-w-[1440px] mx-auto my-10">
-      <div className="flex flex-col justify-center items-center gap-2">
-        <button onClick={createWallet} className="btn btn-circle btn-outline">
-          <box-icon name="plus"></box-icon>
+    <main className="max-w-[1240px] mx-auto mt-24">
+      <div className="flex flex-col justify-center items-center gap-2 text-white">
+        <button
+          onClick={createWallet}
+          className="bg-[#faa018] transition-all shadow-md hover:ring-2  ring-[#faa018] h-12 w-12 rounded-full flex items-center justify-center"
+        >
+          <box-icon color="#ffffff" name="plus"></box-icon>
         </button>
         <h2 className="font-bold">Crear Cartera</h2>
       </div>
@@ -45,6 +32,6 @@ export default function Homepage() {
           return <Cartera transactions={valor.transactions} key={valor.id} id={valor.id} activos={valor.activos} initialUsd={valor.initialUsd} />;
         })}
       </div>
-    </div>
+    </main>
   );
 }

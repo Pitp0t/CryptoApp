@@ -10,8 +10,6 @@
   user-select: none;
 }
 
-$height: 270px;
-
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -22,14 +20,29 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
+:root,
+[data-theme] {
+  background: #252429;
+}
+
+body {
+  background: #252429;
+}
+
+$height: 270px;
+
 .carteras {
   padding: 2em 0 7em 0;
-  margin: 4em auto 4em auto;
+  margin: 2em auto 4em auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, $height);
   justify-content: center;
   align-items: center;
-  gap: 35px;
+  gap: 10px;
 }
 
 @media screen and (max-width: 640px) {

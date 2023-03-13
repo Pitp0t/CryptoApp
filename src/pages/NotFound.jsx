@@ -3,9 +3,9 @@ import { NavLink } from "react-router-dom";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col h-[60vh] justify-center items-center gap-5 text-center">
+    <div className="flex flex-col h-[60vh] justify-center items-center gap-5 text-center text-white">
       <div>
-        <h2 className="text-xl font-bold">Error 404</h2>
+        <h2 className="text-xl font-bold ">Error 404</h2>
         <h2>Page not found</h2>
       </div>
 
