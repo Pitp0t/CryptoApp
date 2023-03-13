@@ -10,11 +10,17 @@ export default function Homepage() {
   const { createWallet, carterasCreada } = useContext(WalletContext);
 
   useEffect(() => {
+    console.log("FETCH DATA");
     getCryptoData();
   }, []);
 
   if (error) return <Error error={error} />;
-  if (cryptoData.length === 0) return <Loading />;
+  if (cryptoData.length === 0)
+    return (
+      <div className="h-[60vh]">
+        <Loading />
+      </div>
+    );
 
   return (
     <main className="max-w-[1240px] mx-auto mt-24">
@@ -25,11 +31,11 @@ export default function Homepage() {
         >
           <box-icon color="#ffffff" name="plus"></box-icon>
         </button>
-        <h2 className="font-bold">Crear Cartera</h2>
+        <h2 className="font-medium">Crear Cartera</h2>
       </div>
       <div className="carteras">
         {carterasCreada.map((valor) => {
-          return <Cartera transactions={valor.transactions} key={valor.id} id={valor.id} activos={valor.activos} initialUsd={valor.initialUsd} />;
+          return <Cartera transactions={valor.transactions} key={valor.id} id={valor.id} balance={valor.balance} />;
         })}
       </div>
     </main>

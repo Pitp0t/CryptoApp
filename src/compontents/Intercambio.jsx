@@ -9,6 +9,7 @@ export default function Intercambio() {
   const { setValue, value } = useContext(WalletContext);
 
   useEffect(() => {
+    console.log("FETCH DATA");
     getCryptoData();
   }, []);
 

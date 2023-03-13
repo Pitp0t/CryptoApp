@@ -28,14 +28,14 @@ export default function Wallet() {
             className="flex gap-5 justify-center items-center py-3 font-bold  bg-[#faa018] w-full rounded-xl shadow-md hover:ring-2  ring-[#faa018]  text-slate-200 hover:text-slate-100 transition-all"
           >
             <h2>COMPRAR</h2>
-            <box-icon name="up-arrow-circle" color="#ffffff"></box-icon>
+            <box-icon name="down-arrow-circle" color="#ffffff"></box-icon>
           </button>
           <button
             onClick={() => vender(walletId)}
             className=" flex gap-5 justify-center items-center py-3 font-bold  bg-[#faa018] w-full  rounded-xl shadow-md hover:ring-2   ring-[#faa018]  text-slate-200 hover:text-slate-100 transition-all"
           >
             <h2>VENDER</h2>
-            <box-icon name="down-arrow-circle" rotate="180" color="#ffffff"></box-icon>
+            <box-icon name="up-arrow-circle" color="#ffffff"></box-icon>
           </button>
         </div>
         <div className=" mt-10 ">

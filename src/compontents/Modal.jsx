@@ -58,7 +58,7 @@ export default function Modal() {
 
       {isOpen && (
         <>
-          <input type="checkbox" checked={true} id="my-modal" className="modal-toggle" />
+          <input type="checkbox" defaultChecked id="my-modal" className="modal-toggle" />
           <div className="modal ">
             <div className="modal-box relative flex flex-col py-0 gap-5 justify-start items-center min-h-[90vh] bg-[#3F3E45] text-white">
               <div className="sticky top-0 flex gap-2 items-center justify-center flex-col pt-6  w-full bg-[#3F3E45]">
