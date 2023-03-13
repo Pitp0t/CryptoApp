@@ -27,7 +27,7 @@ input[type=number] {
 
 :root,
 [data-theme] {
-  background: #252429;
+  background-color: #252429;
 }
 
 body {

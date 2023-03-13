@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { WalletContext } from "../context/WalletContext";
 
-export default function Transaccion({ fecha, venta, id, walletId, type, value }) {
+export default function Transaccion({ fecha, venta, id, walletId, type, value, quantity }) {
   const { deleteTransaction } = useContext(WalletContext);
 
   const formatedValue = new Intl.NumberFormat("en", {
@@ -16,7 +16,10 @@ export default function Transaccion({ fecha, venta, id, walletId, type, value })
         </div>
         <div>
           <h2 className="text-sm">{fecha}</h2>
-          <h2 className="font-bold">{type.toUpperCase()}</h2>
+          <div className="font-bold flex gap-2">
+            <h2 className="text-[#faa018]">{quantity}</h2>
+            <h2>{type.toUpperCase()}</h2>
+          </div>
         </div>
       </div>
       <div className="flex justify-center items-center  gap-2">

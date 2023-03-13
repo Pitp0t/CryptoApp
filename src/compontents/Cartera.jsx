@@ -7,7 +7,7 @@ export default function Cartera({ transactions, id }) {
 
   const listaActivos = transactions.map((valor) => {
     return (
-      <div className="bg-[#faa018] transition-all shadow-md hover:ring-2  ring-[#faa018] h-8 w-8 rounded-full flex justify-center items-center">
+      <div className="bg-[#6c7b904d] transition-all shadow-md hover:ring-2  ring-[#6c7b904d] h-8 w-8 rounded-full flex justify-center items-center">
         <h3 key={valor.type} className=" text-[9px] font-bold">
           {valor.type.toUpperCase()}
         </h3>
@@ -26,20 +26,20 @@ export default function Cartera({ transactions, id }) {
       {/* <div className="absolute top-5 left-5 cursor-pointer">
         <box-icon type="solid" name="edit-alt"></box-icon>
       </div> */}
-      {/* <Link
+      <Link
         to={`wallet/${id}`}
-        className=" bg-[#faa018] transition-all px-10 py-2 gap-2 font-bold shadow-md hover:ring-2  ring-[#faa018]  rounded-full flex justify-center items-center "
+        className=" bg-[#faa018] transition-all px-14 py-2 gap-2 font-bold shadow-md hover:ring-2  ring-[#faa018]  rounded-full flex justify-center items-center "
       >
         Ver cartera
         <box-icon name="wallet" color="#ffffff"></box-icon>
-      </Link> */}
-      <Link
+      </Link>
+      {/* <Link
         to={`wallet/${id}`}
         className=" bg-[#6c7b904d] flex  items-center justify-center gap-3  font-bold px-14 py-2 rounded-full w-fit shadow-md hover:ring-2  bg-opacity-[0.12] ring-slate-500  text-slate-200 hover:text-slate-100 transition-all "
       >
         Ver cartera
         <box-icon name="wallet" color="#ffffff"></box-icon>
-      </Link>
+      </Link> */}
     </div>
   );
 }

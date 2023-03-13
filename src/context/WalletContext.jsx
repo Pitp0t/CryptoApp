@@ -14,10 +14,10 @@ const WalletPorvider = (props) => {
   function createWallet() {
     const newWallet = {
       id: nanoid(),
-      initialUsd: 2000,
+      balance: 2000,
       transactions: [
-        { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: true, type: "BTC", value: 0.2 },
-        { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: false, type: "ETH", value: 0.2 },
+        { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: true, type: "BTC", value: 0.2, quantity: 0.2 },
+        { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: false, type: "ETH", value: 0.2, quantity: 0.3 },
       ],
     };
     setCarterascreadas((prev) => [...prev, newWallet]);
@@ -41,8 +41,9 @@ const WalletPorvider = (props) => {
 
   function comprar(walletId) {
     if (!selectedCoinData) return alert("Selecciona una moneda");
-    if (value < 0) return alert("El valor debe ser mayor a 0");
     if (!value) return alert("Selecciona un valor");
+    if (value < 0) return alert("El valor debe ser mayor a 0");
+    if (isNaN(value)) alert("El valor debe ser un numero");
 
     const now = new Date();
     const date = now.toLocaleDateString();
@@ -53,12 +54,13 @@ const WalletPorvider = (props) => {
 
     const updatedWallets = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
+        const newBalance = wallet.balance + calculoMonedaValor;
         const allPreviousTransaction = wallet.transactions;
         const updatedTransactions = [
           ...allPreviousTransaction,
-          { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor.toFixed(2) },
+          { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor, quantity: value },
         ];
-        return { ...wallet, transactions: updatedTransactions };
+        return { ...wallet, balance: newBalance, transactions: updatedTransactions };
       }
       return wallet;
     });
@@ -69,9 +71,10 @@ const WalletPorvider = (props) => {
   }
 
   function vender(walletId) {
-    if (!selectedCoinData) return alert("Select coin");
+    if (!selectedCoinData) return alert("Selecciona una moneda");
+    if (!value) return alert("Selecciona un valor");
     if (value < 0) return alert("El valor debe ser mayor a 0");
-    if (!value) return alert("Select Value");
+    if (isNaN(value)) alert("El valor debe ser un numero");
     const now = new Date();
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
@@ -82,12 +85,13 @@ const WalletPorvider = (props) => {
 
     const updatedWallets = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
+        const newBalance = wallet.balance - calculoMonedaValor;
         const allPreviousTransaction = wallet.transactions;
         const updatedTransactions = [
           ...allPreviousTransaction,
-          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: -calculoMonedaValor.toFixed(2) },
+          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: -calculoMonedaValor, quantity: value },
         ];
-        return { ...wallet, transactions: updatedTransactions };
+        return { ...wallet, balance: newBalance, transactions: updatedTransactions };
       }
       return wallet;
     });
