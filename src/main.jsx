@@ -5,11 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import WalletPorvider from "./context/WalletContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <>
-    <WalletPorvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </WalletPorvider>
-  </>
+  <WalletPorvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </WalletPorvider>
 );

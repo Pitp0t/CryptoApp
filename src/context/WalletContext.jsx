@@ -1,20 +1,19 @@
 import React, { useEffect, useState, createContext } from "react";
 import { nanoid } from "nanoid";
-
 export const WalletContext = createContext();
 
 const WalletPorvider = (props) => {
   const [carterasCreada, setCarterascreadas] = useState(JSON.parse(localStorage.getItem("wallets")) || []);
+  const [selectedCoinData, setSelectedCoinData] = useState();
+  const [value, setValue] = useState();
 
   useEffect(() => {
-    console.log("LOCAL USEEFFECT");
     localStorage.setItem("wallets", JSON.stringify(carterasCreada));
   }, [carterasCreada]);
 
   function createWallet() {
     const newWallet = {
       id: nanoid(),
-      activos: ["BTC", "ETH"],
       initialUsd: 2000,
       transactions: [
         { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: true, type: "BTC", value: 0.2 },
@@ -37,12 +36,71 @@ const WalletPorvider = (props) => {
       }
       return wallet;
     });
-
-    console.log(updatedWallets);
     setCarterascreadas(updatedWallets);
   }
 
-  return <WalletContext.Provider value={{ carterasCreada, deleteWallet, createWallet, deleteTransaction }}>{props.children}</WalletContext.Provider>;
+  function comprar(walletId) {
+    if (!selectedCoinData) return alert("Select coin");
+    if (!value) return alert("Select Value");
+
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+    const formattedDate = `${date} ${time}`;
+    const calculoMonedaValor = value * selectedCoinData[0].price;
+    const typeOfCoin = selectedCoinData[0].symbol;
+
+    const updatedWallets = carterasCreada.map((wallet) => {
+      if (wallet.id === walletId) {
+        const allPreviousTransaction = wallet.transactions;
+        const updatedTransactions = [
+          ...allPreviousTransaction,
+          { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor.toFixed(2) },
+        ];
+        return { ...wallet, transactions: updatedTransactions };
+      }
+      return wallet;
+    });
+
+    setValue();
+    setSelectedCoinData();
+    setCarterascreadas(updatedWallets);
+  }
+
+  function vender(walletId) {
+    if (!selectedCoinData) return alert("Select coin");
+    if (!value) return alert("Select Value");
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+    const formattedDate = `${date} ${time}`;
+    const calculoMonedaValor = value * selectedCoinData[0].price;
+    const typeOfCoin = selectedCoinData[0].symbol;
+    if (!calculoMonedaValor || !typeOfCoin) return alert("Select value");
+
+    const updatedWallets = carterasCreada.map((wallet) => {
+      if (wallet.id === walletId) {
+        const allPreviousTransaction = wallet.transactions;
+        const updatedTransactions = [
+          ...allPreviousTransaction,
+          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor.toFixed(2) },
+        ];
+        return { ...wallet, transactions: updatedTransactions };
+      }
+      return wallet;
+    });
+    setValue();
+    setSelectedCoinData();
+    setCarterascreadas(updatedWallets);
+  }
+
+  function editTransactions() {}
+
+  return (
+    <WalletContext.Provider value={{ carterasCreada, deleteWallet, createWallet, deleteTransaction, setSelectedCoinData, setValue, comprar, vender }}>
+      {props.children}
+    </WalletContext.Provider>
+  );
 };
 
 export default WalletPorvider;

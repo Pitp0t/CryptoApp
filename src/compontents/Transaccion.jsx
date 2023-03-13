@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { WalletContext } from "../context/WalletContext";
 
-export default function Transaccion({ fecha, venta, id, walletId }) {
+export default function Transaccion({ fecha, venta, id, walletId, type, value }) {
   const { deleteTransaction } = useContext(WalletContext);
 
   return (
@@ -10,13 +10,13 @@ export default function Transaccion({ fecha, venta, id, walletId }) {
         <box-icon name="transfer"></box-icon>
         <div>
           <h2>{fecha}</h2>
-          <h2 className="font-bold">BTC-ETH</h2>
+          <h2 className="font-bold">{type.toUpperCase()}</h2>
         </div>
       </div>
       <div className="flex justify-center items-center  gap-2">
         {venta && <box-icon name="right-top-arrow-circle"></box-icon>}
         {!venta && <box-icon name="arrow-from-top"></box-icon>}
-        <h2>15000$</h2>
+        <h2>{value} USD</h2>
       </div>
       <div className="flex gap-0 md:gap-2 ">
         <button className="btn btn-circle btn-outline scale-75 md:scale-100 origin-right">

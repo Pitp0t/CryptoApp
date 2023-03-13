@@ -9,12 +9,10 @@ import "./style.css";
 
 export default function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/wallet/:walletId" element={<Wallet />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Homepage />} />
+      <Route path="/wallet/:walletId" element={<Wallet />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
