@@ -17,7 +17,7 @@ export default function Cartera({ transactions, id, balance }) {
     if (indx < 4) {
       return (
         <div className="bg-[#6c7b904d] transition-all shadow-md hover:ring-2  ring-[#6c7b904d] h-8 w-8 rounded-full flex justify-center items-center">
-          <h3 key={valor} className=" text-[9px] font-bold">
+          <h3 key={valor} className=" text-[9px] font-medium">
             {valor.toUpperCase()}
           </h3>
         </div>

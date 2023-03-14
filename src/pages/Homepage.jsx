@@ -15,12 +15,7 @@ export default function Homepage() {
   }, []);
 
   if (error) return <Error error={error} />;
-  if (cryptoData.length === 0)
-    return (
-      <div className="h-[60vh]">
-        <Loading />
-      </div>
-    );
+  if (cryptoData.length === 0) return <Loading />;
 
   return (
     <main className="max-w-[1240px] mx-auto mt-24">

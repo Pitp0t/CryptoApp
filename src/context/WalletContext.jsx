@@ -38,8 +38,11 @@ const WalletPorvider = (props) => {
   function deleteTransaction(walletId, transactionId) {
     const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
+        const prevTransaction = wallet.transactions.find((valor) => valor.id === transactionId);
+        const newBalance = wallet.balance;
         const updatedTransactions = wallet.transactions.filter((transaction) => transaction.id !== transactionId);
-        return { ...wallet, transactions: updatedTransactions };
+        if (prevTransaction.venta) return { ...wallet, balance: newBalance - prevTransaction.value, transactions: updatedTransactions };
+        if (!prevTransaction.venta) return { ...wallet, balance: newBalance + prevTransaction.value, transactions: updatedTransactions };
       }
       return wallet;
     });
@@ -51,7 +54,6 @@ const WalletPorvider = (props) => {
   function calculoPrecio() {
     if (selectedCoinData) {
       const calculoMonedaValor = value * selectedCoinData[0].price;
-      console.log(calculoMonedaValor);
       return setCalculoValor(calculoMonedaValor);
     }
     return 0;
@@ -115,7 +117,7 @@ const WalletPorvider = (props) => {
   //EDITARCARTERAS//
 
   function editTransactionsVender(walletId, id) {
-    console.log("VENDER");
+    if (!selectedCoinDataEdit) return;
     if (!editedValue) return alert("Selecciona un valor");
     if (editedValue < 0) return alert("El valor debe ser mayor a 0");
     if (isNaN(editedValue)) return alert("El valor debe ser un numero");
@@ -130,8 +132,10 @@ const WalletPorvider = (props) => {
     const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
         const allPreviousTransaction = wallet.transactions.filter((valor) => valor.id !== id);
-        const prevTransaction = wallet.transactions.filter((valor) => valor.id === id);
-        const newBalance = wallet.balance - prevTransaction[0].value;
+
+        const prevTransaction = wallet.transactions.find((valor) => valor.id === id);
+        const newBalance = wallet.balance - prevTransaction.value;
+
         const updatedTransactions = [
           ...allPreviousTransaction,
           { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor, quantity: editedValue },
@@ -163,8 +167,10 @@ const WalletPorvider = (props) => {
     const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
         const allPreviousTransaction = wallet.transactions.filter((valor) => valor.id !== id);
-        const prevTransaction = wallet.transactions.filter((valor) => valor.id === id);
-        const newBalance = wallet.balance + prevTransaction[0].value;
+
+        const prevTransaction = wallet.transactions.find((valor) => valor.id === id);
+        const newBalance = wallet.balance + prevTransaction.value;
+
         const updatedTransactions = [
           ...allPreviousTransaction,
           { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor, quantity: editedValue },

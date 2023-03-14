@@ -35,7 +35,7 @@ export default function Intercambio() {
         />
         <Modal />
       </div>
-      <h2 className="text-white">PRECIO: {calculoValor !== "" ? calculoValor : 0} $USD</h2>
+      <h2 className=" text-slate-200">{calculoValor !== "" ? calculoValor : 0} $USD</h2>
     </div>
   );
 }
