@@ -68,7 +68,7 @@ export default function Modal({ cryptoData }) {
                     </button>
                   </div>
                 </div>
-                <h3 className="font-bold text-lg">Seleccioná la moneda</h3>
+                <h3 className="font-medium text-lg">Seleccioná la moneda</h3>
                 <div className="flex gap-5 items-center justify-center h-10 py-5 px-3 w-full rounded-2xl border-2  border-gray ">
                   <input
                     type="text"

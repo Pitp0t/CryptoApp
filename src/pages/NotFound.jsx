@@ -9,7 +9,7 @@ export default function NotFound() {
         <h2>Page not found</h2>
       </div>
 
-      <NavLink to="/">
+      <NavLink to="/CryptoApp/">
         <button className="btn gap-2">
           <box-icon color="#ffffff" name="left-arrow-circle"></box-icon>
           Go back

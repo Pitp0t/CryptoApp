@@ -20,7 +20,7 @@ export default function Cartera({ transactions, id, balance, cryptoData }) {
     if (indx < 4) {
       return (
         <div className="bg-[#6c7b904d] transition-all shadow-md hover:ring-2  ring-[#6c7b904d] h-8 w-8 rounded-full flex justify-center items-center">
-          <img key={valor} src={valor}></img>
+          <img className="rounded-full" key={valor} src={valor}></img>
         </div>
       );
     }
@@ -48,12 +48,15 @@ export default function Cartera({ transactions, id, balance, cryptoData }) {
           everyImg
         )}
       </div>
-      <button onClick={() => deleteWallet(id)} className="absolute top-5 right-5 cursor-pointer">
+      <button
+        onClick={() => deleteWallet(id)}
+        className="absolute h-12 w-12 rounded-full flex justify-center items-center hover:bg-[#5866784d]  transition-colors top-2 right-2 cursor-pointer"
+      >
         <box-icon color="#ffffff" name="trash"></box-icon>
       </button>
       <Link
         to={`wallet/${id}`}
-        className=" bg-[#faa018] transition-all px-14 py-2 gap-2 font-bold shadow-md hover:ring-2  ring-[#faa018]  rounded-full flex justify-center items-center "
+        className=" bg-[#faa018]  transition-all px-14 py-2 gap-2 font-bold shadow-md hover:ring-2  ring-[#faa018]  rounded-full flex justify-center items-center "
       >
         Ver cartera
         <box-icon name="wallet" color="#ffffff"></box-icon>

@@ -18,7 +18,7 @@ export default function Homepage() {
   if (cryptoData.length === 0) return <Loading />;
 
   return (
-    <main className="max-w-[1240px] mx-auto mt-24">
+    <main className="max-w-[1240px] mx-auto mt-24 ">
       <div className="flex flex-col justify-center items-center gap-2 text-white">
         <button
           onClick={createWallet}

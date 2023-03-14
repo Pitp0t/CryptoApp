@@ -12,8 +12,8 @@ export default function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/wallet/:walletId" element={<Wallet />} />
+        <Route path="/CryptoApp/" element={<Homepage />} />
+        <Route path="CryptoApp/wallet/:walletId" element={<Wallet />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
