@@ -10,16 +10,14 @@ export default function Wallet() {
 
   const singleWallet = carterasCreada.filter((valor) => valor.id === walletId);
 
-  const formatedValue = new Intl.NumberFormat("en", {
-    notation: "compact",
-  });
+  const formatter = new Intl.NumberFormat("es-ES", { style: "decimal" });
 
   return (
     <>
       <div className=" mx-auto my-20  rounded-lg px-2 md:p-5  md:max-w-[700px] ">
         <div className="bg-[#3F3E45] rounded-lg py-10 px-5  md:px-10 my-5 flex flex-col gap-2 text-white">
           <h2 className="text-xl font-extralight"> Balance :</h2>
-          <h2 className="text-4xl"> {formatedValue.format(singleWallet[0].balance)} $USD</h2>
+          <h2 className="text-4xl"> {formatter.format(singleWallet[0].balance)} $USD</h2>
         </div>
         <Intercambio />
         <div className="flex gap-4 ">

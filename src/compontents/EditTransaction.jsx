@@ -3,7 +3,7 @@ import Loading from "./Loading";
 import { WalletContext } from "../context/WalletContext";
 import useFetch from "../hooks/useFetch";
 
-export default function EditTransaction({ type, walletId, id }) {
+export default function EditTransaction({ type, walletId, id, venta, quantity }) {
   const { setselectedCoinDataEdit, setEditedValue, editTransactionsComprar, editTransactionsVender, editedValue } = useContext(WalletContext);
 
   const { cryptoData, getCryptoData } = useFetch();
@@ -33,24 +33,28 @@ export default function EditTransaction({ type, walletId, id }) {
           min="0"
           className="border-none bg-transparent outline-none text-3xl text-center w-full text-[#faa018]"
           type="number"
-          placeholder="0.1"
+          placeholder={quantity}
         />
         <h2 className="font-bold">{type.toUpperCase()}</h2>
       </div>
 
       <div className="flex">
-        <button
-          onClick={() => editTransactionsVender(walletId, id)}
-          className=" flex gap-5 justify-center items-center py-3 font-medium  bg-[#faa01854] w-full  rounded-xl shadow-md hover:ring-2   ring-[#faa018]  text-slate-200 hover:text-slate-100 transition-all"
-        >
-          <h2>COMPRAR</h2>
-        </button>
-        <button
-          onClick={() => editTransactionsComprar(walletId, id)}
-          className=" flex gap-5 justify-center items-center py-3 font-medium  bg-[#faa01854] w-full  rounded-xl shadow-md hover:ring-2   ring-[#faa018]  text-slate-200 hover:text-slate-100 transition-all"
-        >
-          <h2>VENDER</h2>
-        </button>
+        {venta && (
+          <button
+            onClick={() => editTransactionsVender(walletId, id)}
+            className=" flex gap-5 justify-center items-center py-3 font-medium  bg-[#faa01854] w-full  rounded-xl shadow-md hover:ring-2   ring-[#faa018]  text-slate-200 hover:text-slate-100 transition-all"
+          >
+            <h2>VENDER</h2>
+          </button>
+        )}
+        {!venta && (
+          <button
+            onClick={() => editTransactionsComprar(walletId, id)}
+            className=" flex gap-5 justify-center items-center py-3 font-medium  bg-[#faa01854] w-full  rounded-xl shadow-md hover:ring-2   ring-[#faa018]  text-slate-200 hover:text-slate-100 transition-all"
+          >
+            <h2>COMPRAR</h2>
+          </button>
+        )}
       </div>
     </div>
   );

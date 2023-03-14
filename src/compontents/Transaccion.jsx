@@ -50,7 +50,7 @@ export default function Transaccion({ fecha, venta, id, walletId, type, value, q
           </button>
         </div>
       </div>
-      {toggleEdit && <EditTransaction type={type} walletId={walletId} id={id} />}
+      {toggleEdit && <EditTransaction type={type} walletId={walletId} id={id} venta={venta} quantity={quantity} />}
     </>
   );
 }

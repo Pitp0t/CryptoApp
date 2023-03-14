@@ -6,12 +6,16 @@ import { useForm } from "react-hook-form";
 
 export default function Intercambio() {
   const { getCryptoData } = useFetch();
-  const { setValue, value } = useContext(WalletContext);
+  const { setValue, value, calculoValor, calculoPrecio, selectedCoinData } = useContext(WalletContext);
 
   useEffect(() => {
     console.log("FETCH DATA");
     getCryptoData();
   }, []);
+
+  useEffect(() => {
+    calculoPrecio();
+  }, [value, selectedCoinData]);
 
   function updateValue(e) {
     const value = e.target.value;
@@ -31,6 +35,7 @@ export default function Intercambio() {
         />
         <Modal />
       </div>
+      <h2 className="text-white">PRECIO: {calculoValor !== "" ? calculoValor : 0} $USD</h2>
     </div>
   );
 }

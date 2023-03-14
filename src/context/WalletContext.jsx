@@ -4,9 +4,10 @@ export const WalletContext = createContext();
 
 const WalletPorvider = (props) => {
   const [carterasCreada, setCarterascreadas] = useState(JSON.parse(localStorage.getItem("wallets")) || []);
+  const [calculoValor, setCalculoValor] = useState();
 
   //Info to
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(0);
   const [selectedCoinData, setSelectedCoinData] = useState();
 
   //Info to edit
@@ -35,67 +36,67 @@ const WalletPorvider = (props) => {
   }
 
   function deleteTransaction(walletId, transactionId) {
-    const updatedWallets = carterasCreada.map((wallet) => {
+    const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
         const updatedTransactions = wallet.transactions.filter((transaction) => transaction.id !== transactionId);
         return { ...wallet, transactions: updatedTransactions };
       }
       return wallet;
     });
-    setCarterascreadas(updatedWallets);
+    setCarterascreadas(carterasUpdateadas);
   }
 
   // COMPRAR/VENDER  TOMA LAS VARAIBLES DEL INPUT (VALOR) , EL TIPO DE MONEDA Y ACTUALIZA TODO EL OBJETO WALLETS(carterasCreada)
 
-  function comprar(walletId) {
-    console.log("COMRPAR");
+  function calculoPrecio() {
+    if (selectedCoinData) {
+      const calculoMonedaValor = value * selectedCoinData[0].price;
+      console.log(calculoMonedaValor);
+      return setCalculoValor(calculoMonedaValor);
+    }
+    return 0;
+  }
 
+  function comprar(walletId) {
     if (!selectedCoinData) return alert("Selecciona una moneda");
     if (!value) return alert("Selecciona un valor");
     if (value < 0) return alert("El valor debe ser mayor a 0");
     if (isNaN(value)) alert("El valor debe ser un numero");
-
     const now = new Date();
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
     const formattedDate = `${date} ${time}`;
     const calculoMonedaValor = value * selectedCoinData[0].price;
     const typeOfCoin = selectedCoinData[0].symbol;
-
-    const updatedWallets = carterasCreada.map((wallet) => {
+    const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
         const newBalance = wallet.balance - calculoMonedaValor;
         const allPreviousTransaction = wallet.transactions;
         const updatedTransactions = [
           ...allPreviousTransaction,
-          { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor, quantity: value },
+          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor, quantity: value },
         ];
         return { ...wallet, balance: newBalance, transactions: updatedTransactions };
       }
       return wallet;
     });
-    setValue();
-    setSelectedCoinData();
-    setCarterascreadas(updatedWallets);
+    setValue(0);
+    return setCarterascreadas(carterasUpdateadas);
   }
 
   function vender(walletId) {
-    console.log("VENDER");
-
     if (!selectedCoinData) return alert("Selecciona una moneda");
     if (!value) return alert("Selecciona un valor");
     if (value < 0) return alert("El valor debe ser mayor a 0");
     if (isNaN(value)) return alert("El valor debe ser un numero");
-
     const now = new Date();
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
     const formattedDate = `${date} ${time}`;
     const calculoMonedaValor = value * selectedCoinData[0].price;
     const typeOfCoin = selectedCoinData[0].symbol;
-
     if (!calculoMonedaValor || !typeOfCoin) return alert("Select value");
-    const updatedWallets = carterasCreada.map((wallet) => {
+    const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
         const newBalance = wallet.balance + calculoMonedaValor;
         const allPreviousTransaction = wallet.transactions;
@@ -107,15 +108,14 @@ const WalletPorvider = (props) => {
       }
       return wallet;
     });
-
-    setValue();
-    setSelectedCoinData();
-    setCarterascreadas(updatedWallets);
+    setValue(0);
+    return setCarterascreadas(carterasUpdateadas);
   }
 
-  function editTransactionsVender(walletId, id) {
-    console.log("EDITAR");
+  //EDITARCARTERAS//
 
+  function editTransactionsVender(walletId, id) {
+    console.log("VENDER");
     if (!editedValue) return alert("Selecciona un valor");
     if (editedValue < 0) return alert("El valor debe ser mayor a 0");
     if (isNaN(editedValue)) return alert("El valor debe ser un numero");
@@ -127,29 +127,27 @@ const WalletPorvider = (props) => {
     const calculoMonedaValor = editedValue * selectedCoinDataEdit[0].price;
     const typeOfCoin = selectedCoinDataEdit[0].symbol;
 
-    console.log(calculoMonedaValor);
-    console.log(typeOfCoin);
-
-    const updatedWallets = carterasCreada.map((wallet) => {
+    const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
-        const newBalance = wallet.balance + calculoMonedaValor;
-        const allPreviousTransaction = wallet.transactions;
+        const allPreviousTransaction = wallet.transactions.filter((valor) => valor.id !== id);
+        const prevTransaction = wallet.transactions.filter((valor) => valor.id === id);
+        const newBalance = wallet.balance - prevTransaction[0].value;
         const updatedTransactions = [
           ...allPreviousTransaction,
-          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: -calculoMonedaValor, quantity: editedValue },
+          { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor, quantity: editedValue },
         ];
-        return { ...wallet, balance: newBalance, transactions: updatedTransactions };
+
+        return { ...wallet, balance: newBalance + calculoMonedaValor, transactions: updatedTransactions };
       }
       return wallet;
     });
-
     setEditedValue("");
     setselectedCoinDataEdit();
-    setCarterascreadas(updatedWallets);
+    return setCarterascreadas(carterasUpdateadas);
   }
 
   function editTransactionsComprar(walletId, id) {
-    console.log("EDITAR");
+    console.log("COMPRAR");
 
     if (!editedValue) return alert("Selecciona un valor");
     if (editedValue < 0) return alert("El valor debe ser mayor a 0");
@@ -162,25 +160,24 @@ const WalletPorvider = (props) => {
     const calculoMonedaValor = editedValue * selectedCoinDataEdit[0].price;
     const typeOfCoin = selectedCoinDataEdit[0].symbol;
 
-    console.log(calculoMonedaValor);
-    console.log(typeOfCoin);
-
-    const updatedWallets = carterasCreada.map((wallet) => {
+    const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
-        const newBalance = wallet.balance - calculoMonedaValor;
-        const allPreviousTransaction = wallet.transactions;
+        const allPreviousTransaction = wallet.transactions.filter((valor) => valor.id !== id);
+        const prevTransaction = wallet.transactions.filter((valor) => valor.id === id);
+        const newBalance = wallet.balance + prevTransaction[0].value;
         const updatedTransactions = [
           ...allPreviousTransaction,
-          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: -calculoMonedaValor, quantity: editedValue },
+          { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor, quantity: editedValue },
         ];
-        return { ...wallet, balance: newBalance, transactions: updatedTransactions };
+
+        return { ...wallet, balance: newBalance - calculoMonedaValor, transactions: updatedTransactions };
       }
       return wallet;
     });
 
     setEditedValue("");
     setselectedCoinDataEdit();
-    setCarterascreadas(updatedWallets);
+    return setCarterascreadas(carterasUpdateadas);
   }
 
   return (
@@ -201,6 +198,9 @@ const WalletPorvider = (props) => {
         setselectedCoinDataEdit,
         editedValue,
         deleteTransaction,
+        setCalculoValor,
+        calculoPrecio,
+        calculoValor,
       }}
     >
       {props.children}

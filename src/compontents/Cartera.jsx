@@ -37,7 +37,7 @@ export default function Cartera({ transactions, id, balance }) {
       <img className="h-40 w-40 object-contain" src={Coin} alt="" />
       <h2 className="text-center  font-bold text-md"> </h2>
       <h2 className="text-white font-medium text-xl">{formatedValue.format(balance)} $USD</h2>
-      <div className="flex justify-start items-center gap-2 text-3xl ">
+      <div className="flex h-6 justify-start items-center gap-2 text-3xl ">
         {listaActivos.length > 4 ? (
           <>
             {listaActivos}
