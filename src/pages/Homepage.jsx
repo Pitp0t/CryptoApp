@@ -30,7 +30,7 @@ export default function Homepage() {
       </div>
       <div className="carteras">
         {carterasCreada.map((valor) => {
-          return <Cartera transactions={valor.transactions} key={valor.id} id={valor.id} balance={valor.balance} />;
+          return <Cartera transactions={valor.transactions} cryptoData={cryptoData} key={valor.id} id={valor.id} balance={valor.balance} />;
         })}
       </div>
     </main>

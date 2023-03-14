@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Coin from "../assets/coin2.png";
 import { WalletContext } from "../context/WalletContext";
 
-export default function Cartera({ transactions, id, balance }) {
+export default function Cartera({ transactions, id, balance, cryptoData }) {
   const { deleteWallet } = useContext(WalletContext);
 
   const formatedValue = new Intl.NumberFormat("en", {
@@ -12,14 +12,15 @@ export default function Cartera({ transactions, id, balance }) {
 
   const typeActivos = transactions.map((valor) => valor.type);
   const noDuplicatedActivos = new Set(typeActivos);
+  const noDuplicatedActivosArr = Array.from(noDuplicatedActivos);
+  const coins = cryptoData.filter((valor) => noDuplicatedActivosArr.includes(valor.symbol));
+  const coinsImgs = coins.map((valor) => valor.img);
 
-  const listaActivos = Array.from(noDuplicatedActivos).map((valor, indx) => {
+  const everyImg = coinsImgs.map((valor, indx) => {
     if (indx < 4) {
       return (
         <div className="bg-[#6c7b904d] transition-all shadow-md hover:ring-2  ring-[#6c7b904d] h-8 w-8 rounded-full flex justify-center items-center">
-          <h3 key={valor} className=" text-[9px] font-medium">
-            {valor.toUpperCase()}
-          </h3>
+          <img key={valor} src={valor}></img>
         </div>
       );
     }
@@ -28,7 +29,7 @@ export default function Cartera({ transactions, id, balance }) {
 
   const dottedCoins = (
     <div className="bg-[#6c7b904d] transition-all shadow-md hover:ring-2  ring-[#6c7b904d] h-8 w-8 rounded-full flex justify-center items-center">
-      <h3 className=" text-[9px] font-bold">...</h3>
+      <h3 className=" text-[20px] font-medium">+</h3>
     </div>
   );
 
@@ -38,13 +39,13 @@ export default function Cartera({ transactions, id, balance }) {
       <h2 className="text-center  font-bold text-md"> </h2>
       <h2 className="text-white font-medium text-xl">{formatedValue.format(balance)} $USD</h2>
       <div className="flex h-6 justify-start items-center gap-2 text-3xl ">
-        {listaActivos.length > 4 ? (
+        {everyImg.length > 4 ? (
           <>
-            {listaActivos}
+            {everyImg}
             {dottedCoins}
           </>
         ) : (
-          listaActivos
+          everyImg
         )}
       </div>
       <button onClick={() => deleteWallet(id)} className="absolute top-5 right-5 cursor-pointer">
