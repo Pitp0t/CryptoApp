@@ -3,7 +3,7 @@ import EditTransaction from "./EditTransaction";
 import { WalletContext } from "../context/WalletContext";
 import { Link } from "react-router-dom";
 
-export default function Transaccion({ fecha, venta, id, walletId, type, value, quantity }) {
+export default function Transaccion({ fecha, venta, id, walletId, type, value, quantity, cryptoData }) {
   const { deleteTransaction } = useContext(WalletContext);
   const [toggleEdit, setToggleEdit] = useState(false);
 
@@ -50,7 +50,7 @@ export default function Transaccion({ fecha, venta, id, walletId, type, value, q
           </button>
         </div>
       </div>
-      {toggleEdit && <EditTransaction type={type} walletId={walletId} id={id} venta={venta} quantity={quantity} />}
+      {toggleEdit && <EditTransaction type={type} walletId={walletId} id={id} venta={venta} quantity={quantity} cryptoData={cryptoData} />}
     </>
   );
 }

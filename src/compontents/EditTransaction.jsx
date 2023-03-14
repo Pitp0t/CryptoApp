@@ -3,17 +3,8 @@ import Loading from "./Loading";
 import { WalletContext } from "../context/WalletContext";
 import useFetch from "../hooks/useFetch";
 
-export default function EditTransaction({ type, walletId, id, venta, quantity }) {
+export default function EditTransaction({ type, walletId, id, venta, quantity, cryptoData }) {
   const { setselectedCoinDataEdit, setEditedValue, editTransactionsComprar, editTransactionsVender, editedValue } = useContext(WalletContext);
-
-  const { cryptoData, getCryptoData } = useFetch();
-
-  console.log(editedValue);
-
-  useEffect(() => {
-    console.log("CRYPTO DATA");
-    getCryptoData();
-  }, []);
 
   const singleCoinToEdit = cryptoData.filter((valor) => valor.symbol === type);
 

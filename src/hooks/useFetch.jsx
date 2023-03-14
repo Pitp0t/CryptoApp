@@ -20,6 +20,7 @@ export default function useFetch() {
         })
       );
     } catch (error) {
+      console.log(error);
       return setError(error.message);
     }
   };

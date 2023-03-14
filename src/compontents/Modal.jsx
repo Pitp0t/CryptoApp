@@ -3,10 +3,10 @@ import Btc from "../assets/coin2.png";
 import useFetch from "../hooks/useFetch";
 import CrtyptoData from "./CrytoData";
 import { WalletContext } from "../context/WalletContext";
+import Loading from "./Loading";
 
-export default function Modal() {
+export default function Modal({ cryptoData }) {
   const { setSelectedCoinData, selectedCoinData } = useContext(WalletContext);
-  const { getCryptoData, cryptoData } = useFetch();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -14,10 +14,6 @@ export default function Modal() {
     setQuery("");
     setIsOpen((prev) => !prev);
   };
-
-  useEffect(() => {
-    getCryptoData();
-  }, []);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -83,6 +79,7 @@ export default function Modal() {
                   <box-icon color="#ffffff" name="search"></box-icon>
                 </div>
               </div>
+              {cryptoData.length === 0 && <Loading />}
 
               <div className="flex flex-col justify-start w-full">
                 {filteredCoins.map((valor) => {

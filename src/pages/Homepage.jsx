@@ -10,7 +10,7 @@ export default function Homepage() {
   const { createWallet, carterasCreada } = useContext(WalletContext);
 
   useEffect(() => {
-    console.log("FETCH DATA");
+    console.log("FETCH DATA HOMEPAGE");
     getCryptoData();
   }, []);
 

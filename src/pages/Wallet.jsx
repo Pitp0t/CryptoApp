@@ -3,13 +3,19 @@ import Transaccion from "../compontents/Transaccion";
 import Intercambio from "../compontents/Intercambio";
 import { WalletContext } from "../context/WalletContext";
 import { useParams } from "react-router-dom";
+import useFetch from "../hooks/useFetch";
 
 export default function Wallet() {
   const { carterasCreada, comprar, vender } = useContext(WalletContext);
   const { walletId } = useParams();
+  const { cryptoData, getCryptoData } = useFetch();
+
+  useEffect(() => {
+    console.log("FETCHING DATA WALLET");
+    getCryptoData();
+  }, []);
 
   const singleWallet = carterasCreada.filter((valor) => valor.id === walletId);
-
   const formatter = new Intl.NumberFormat("es-ES", { style: "decimal" });
 
   return (
@@ -19,7 +25,7 @@ export default function Wallet() {
           <h2 className="text-xl font-extralight"> Balance :</h2>
           <h2 className="text-4xl"> {formatter.format(singleWallet[0].balance.toFixed(2))} $USD</h2>
         </div>
-        <Intercambio />
+        <Intercambio cryptoData={cryptoData} />
         <div className="flex gap-4 ">
           <button
             onClick={() => comprar(walletId)}
@@ -48,6 +54,7 @@ export default function Wallet() {
                 type={valor.type}
                 venta={valor.venta}
                 value={valor.value}
+                cryptoData={cryptoData}
               />
             );
           })}

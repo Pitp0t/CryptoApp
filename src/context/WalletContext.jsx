@@ -22,10 +22,7 @@ const WalletPorvider = (props) => {
     const newWallet = {
       id: nanoid(),
       balance: 2000,
-      transactions: [
-        // { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: true, type: "btc", value: 0.2, quantity: 0.2 },
-        // { id: nanoid(), fecha: "20/09/2023 18:54hs", venta: false, type: "eth", value: 0.2, quantity: 0.3 },
-      ],
+      transactions: [],
     };
     setCarterascreadas((prev) => [...prev, newWallet]);
   }
@@ -151,8 +148,6 @@ const WalletPorvider = (props) => {
   }
 
   function editTransactionsComprar(walletId, id) {
-    console.log("COMPRAR");
-
     if (!editedValue) return alert("Selecciona un valor");
     if (editedValue < 0) return alert("El valor debe ser mayor a 0");
     if (isNaN(editedValue)) return alert("El valor debe ser un numero");
