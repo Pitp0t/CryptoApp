@@ -56,6 +56,18 @@ const WalletPorvider = (props) => {
     return 0;
   }
 
+  function editarCartera(editedBalance, id) {
+    if (isNaN(editedBalance)) return alert("Seleccioná un valor valido");
+    const carteraModificada = carterasCreada.map((wallet) => {
+      if (wallet.id === id) {
+        return { ...wallet, balance: editedBalance };
+      }
+      return wallet;
+    });
+
+    setCarterascreadas(carteraModificada);
+  }
+
   function comprar(walletId) {
     if (!selectedCoinData) return alert("Selecciona una moneda");
     if (!value) return alert("Selecciona un valor");
@@ -111,7 +123,7 @@ const WalletPorvider = (props) => {
     return setCarterascreadas(carterasUpdateadas);
   }
 
-  //EDITARCARTERAS//
+  //EDITARTRANSACCIONES//
 
   function editTransactionsVender(walletId, id) {
     if (!selectedCoinDataEdit) return;
@@ -202,6 +214,7 @@ const WalletPorvider = (props) => {
         setCalculoValor,
         calculoPrecio,
         calculoValor,
+        editarCartera,
       }}
     >
       {props.children}
