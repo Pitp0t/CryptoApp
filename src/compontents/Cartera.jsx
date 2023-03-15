@@ -49,20 +49,22 @@ export default function Cartera({ transactions, id, balance, cryptoData }) {
       <img className="h-40 w-40 object-contain" src={Coin} alt="" />
 
       {toggleEdit && (
-        <div className=" border-2 border-[#faa018] rounded-full p-1 flex justify-center items-center gap-2 mx-5">
-          <input
-            onChange={(e) => setInputEditValue(e.target.value)}
-            min="0"
-            className="border-none bg-transparent outline-none text-xl text-center  w-3/4 text-[white]"
-            type="number"
-          />
-          <button
-            onClick={handleEditarCartera}
-            className=" h-12 w-12 rounded-full flex justify-center items-center hover:bg-[#faa018]  transition-colors top-2 left-2 cursor-pointer"
-          >
-            <box-icon name="save" color="#ffffff"></box-icon>
-          </button>
-        </div>
+        <>
+          <div className=" border-2 border-[#faa018] rounded-full p-1 flex justify-center items-center gap-2 mx-5">
+            <input
+              onChange={(e) => setInputEditValue(e.target.value)}
+              min="0"
+              className="border-none bg-transparent outline-none text-xl text-center  w-3/4 text-[white]"
+              type="number"
+            />
+            <button
+              onClick={handleEditarCartera}
+              className=" h-8 w-8 rounded-full flex justify-center items-center hover:bg-[#faa018]  transition-colors top-2 left-2 cursor-pointer"
+            >
+              <box-icon name="save" color="#ffffff"></box-icon>
+            </button>
+          </div>
+        </>
       )}
 
       {!toggleEdit && <h2 className="text-white font-medium text-xl">{formatedValue.format(balance)} $USD</h2>}
@@ -88,6 +90,7 @@ export default function Cartera({ transactions, id, balance, cryptoData }) {
       >
         <box-icon color="#ffffff" name="trash"></box-icon>
       </button>
+
       <Link
         to={`wallet/${id}`}
         className=" bg-[#faa018]  transition-all px-14 py-2 gap-2 font-bold shadow-md hover:ring-2  ring-[#faa018]  rounded-full flex justify-center items-center "
