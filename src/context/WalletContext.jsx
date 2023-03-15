@@ -72,7 +72,7 @@ const WalletPorvider = (props) => {
     if (!selectedCoinData) return alert("Selecciona una moneda");
     if (!value) return alert("Selecciona un valor");
     if (value < 0) return alert("El valor debe ser mayor a 0");
-    if (isNaN(value)) alert("El valor debe ser un numero");
+    if (isNaN(value)) return alert("El valor debe ser un numero");
     const now = new Date();
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
