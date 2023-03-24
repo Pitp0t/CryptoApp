@@ -20,7 +20,10 @@ const WalletPorvider = (props) => {
 
   function createWallet() {
     const newWallet = {
+      name: "Cartera",
       id: nanoid(),
+      total: 0,
+      coins: [],
       balance: 2000,
       transactions: [],
     };
@@ -35,11 +38,11 @@ const WalletPorvider = (props) => {
   function deleteTransaction(walletId, transactionId) {
     const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
-        const prevTransaction = wallet.transactions.find((valor) => valor.id === transactionId);
-        const newBalance = wallet.balance;
+        // const prevTransaction = wallet.transactions.find((valor) => valor.id === transactionId);
+        // const newBalance = wallet.balance;
         const updatedTransactions = wallet.transactions.filter((transaction) => transaction.id !== transactionId);
-        if (prevTransaction.venta) return { ...wallet, balance: newBalance - prevTransaction.value, transactions: updatedTransactions };
-        if (!prevTransaction.venta) return { ...wallet, balance: newBalance + prevTransaction.value, transactions: updatedTransactions };
+        return { ...wallet, transactions: updatedTransactions };
+        // if (!prevTransaction.venta) return { ...wallet, transactions: updatedTransactions };
       }
       return wallet;
     });
@@ -51,20 +54,21 @@ const WalletPorvider = (props) => {
   function calculoPrecio() {
     if (selectedCoinData) {
       const calculoMonedaValor = value * selectedCoinData[0].price;
+      if (calculoMonedaValor < 0) return setCalculoValor(0);
       return setCalculoValor(calculoMonedaValor);
     }
     return 0;
   }
 
-  function editarCartera(editedBalance, id) {
-    if (isNaN(editedBalance)) return alert("Seleccioná un valor valido");
+  function editarCartera(newName, id) {
+    if (!isNaN(newName)) return alert("Seleccioná un valor valido");
+    if (newName.length > 12) return alert("El nombre debe tener menos de 9 caracteres");
     const carteraModificada = carterasCreada.map((wallet) => {
       if (wallet.id === id) {
-        return { ...wallet, balance: editedBalance };
+        return { ...wallet, name: newName };
       }
       return wallet;
     });
-
     setCarterascreadas(carteraModificada);
   }
 
@@ -73,25 +77,41 @@ const WalletPorvider = (props) => {
     if (!value) return alert("Selecciona un valor");
     if (value < 0) return alert("El valor debe ser mayor a 0");
     if (isNaN(value)) return alert("El valor debe ser un numero");
+
+    // const walletSelected = carterasCreada.find((valor) => valor.id === walletId);
     const now = new Date();
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
     const formattedDate = `${date} ${time}`;
+
     const calculoMonedaValor = value * selectedCoinData[0].price;
+
     const typeOfCoin = selectedCoinData[0].symbol;
+
+    // if (walletSelected.balance < calculoMonedaValor) return alert("El monto es mayor que tu balance");
+
     const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
+        let updatedCoins = wallet.coins;
+        const index = updatedCoins.findIndex((coin) => coin.name.toLowerCase() === typeOfCoin.toLowerCase());
+        if (index !== -1) updatedCoins[index].quantity += Number(value);
+        else if (index === -1) updatedCoins = [...updatedCoins, { name: typeOfCoin.toUpperCase(), quantity: Number(value) }];
+
         const newBalance = wallet.balance - calculoMonedaValor;
         const allPreviousTransaction = wallet.transactions;
         const updatedTransactions = [
           ...allPreviousTransaction,
           { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor, quantity: value },
         ];
-        return { ...wallet, balance: newBalance, transactions: updatedTransactions };
+        console.log(wallet.total + calculoMonedaValor);
+
+        return { ...wallet, coins: updatedCoins, balance: newBalance, transactions: updatedTransactions, total: wallet.total + calculoMonedaValor };
       }
       return wallet;
     });
+
     setValue(0);
+
     return setCarterascreadas(carterasUpdateadas);
   }
 
@@ -100,25 +120,52 @@ const WalletPorvider = (props) => {
     if (!value) return alert("Selecciona un valor");
     if (value < 0) return alert("El valor debe ser mayor a 0");
     if (isNaN(value)) return alert("El valor debe ser un numero");
+
     const now = new Date();
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
     const formattedDate = `${date} ${time}`;
     const calculoMonedaValor = value * selectedCoinData[0].price;
     const typeOfCoin = selectedCoinData[0].symbol;
+
     if (!calculoMonedaValor || !typeOfCoin) return alert("Select value");
     const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
+        let updatedCoins = wallet.coins;
+
+        const index = updatedCoins.findIndex((coin) => coin.name.toLowerCase() === typeOfCoin.toLowerCase());
+        if (!updatedCoins[index]) return wallet;
+
+        const isQuantityMenorACero = updatedCoins[index].quantity - Number(value);
+
+        if (isQuantityMenorACero === 0) {
+          updatedCoins = updatedCoins.filter((valor) => valor.name.toLowerCase() !== updatedCoins[index].name.toLowerCase());
+        }
+
+        if (isQuantityMenorACero < 0) {
+          alert("El valor no puede superar la cantidad de monedas que tenes");
+          return wallet;
+        }
+
+        if (index !== -1 && !isQuantityMenorACero <= 0) updatedCoins[index].quantity = updatedCoins[index].quantity - Number(value);
+        else if (index === -1) updatedCoins = [...updatedCoins, { name: typeOfCoin.toUpperCase(), quantity: Number(value) }];
+
         const newBalance = wallet.balance + calculoMonedaValor;
         const allPreviousTransaction = wallet.transactions;
         const updatedTransactions = [
           ...allPreviousTransaction,
           { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor, quantity: value },
         ];
-        return { ...wallet, balance: newBalance, transactions: updatedTransactions };
+        console.log(wallet.total - calculoMonedaValor);
+        if (updatedCoins.length === 0) {
+          return { ...wallet, coins: updatedCoins, balance: newBalance, transactions: updatedTransactions, total: 0 };
+        }
+
+        return { ...wallet, coins: updatedCoins, balance: newBalance, transactions: updatedTransactions, total: wallet.total - calculoMonedaValor };
       }
       return wallet;
     });
+
     setValue(0);
     return setCarterascreadas(carterasUpdateadas);
   }
@@ -141,16 +188,19 @@ const WalletPorvider = (props) => {
     const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
         const allPreviousTransaction = wallet.transactions.filter((valor) => valor.id !== id);
-
         const prevTransaction = wallet.transactions.find((valor) => valor.id === id);
         const newBalance = wallet.balance - prevTransaction.value;
+
+        let updatedCoins = wallet.coins;
+        const index = updatedCoins.findIndex((coin) => coin.name.toLowerCase() === typeOfCoin.toLowerCase());
+        if (index !== -1) updatedCoins[index].quantity = updatedCoins[index].quantity + Number(editedValue);
 
         const updatedTransactions = [
           ...allPreviousTransaction,
           { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor, quantity: editedValue },
         ];
 
-        return { ...wallet, balance: newBalance + calculoMonedaValor, transactions: updatedTransactions };
+        return { ...wallet, coins: updatedCoins, balance: newBalance + calculoMonedaValor, transactions: updatedTransactions };
       }
       return wallet;
     });
@@ -174,16 +224,19 @@ const WalletPorvider = (props) => {
     const carterasUpdateadas = carterasCreada.map((wallet) => {
       if (wallet.id === walletId) {
         const allPreviousTransaction = wallet.transactions.filter((valor) => valor.id !== id);
-
         const prevTransaction = wallet.transactions.find((valor) => valor.id === id);
         const newBalance = wallet.balance + prevTransaction.value;
+
+        let updatedCoins = wallet.coins;
+        const index = updatedCoins.findIndex((coin) => coin.name.toLowerCase() === typeOfCoin.toLowerCase());
+        if (index !== -1) updatedCoins[index].quantity = updatedCoins[index].quantity - Number(editedValue);
 
         const updatedTransactions = [
           ...allPreviousTransaction,
           { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor, quantity: editedValue },
         ];
 
-        return { ...wallet, balance: newBalance - calculoMonedaValor, transactions: updatedTransactions };
+        return { ...wallet, coins: updatedCoins, balance: newBalance - calculoMonedaValor, transactions: updatedTransactions };
       }
       return wallet;
     });

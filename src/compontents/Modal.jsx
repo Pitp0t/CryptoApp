@@ -55,7 +55,7 @@ export default function Modal({ cryptoData }) {
       {isOpen && (
         <>
           <input type="checkbox" defaultChecked id="my-modal" className="modal-toggle" />
-          <div className="modal ">
+          <div className="modal backdrop-blur">
             <div className="modal-box relative flex flex-col py-0 gap-5 justify-start items-center min-h-[90vh] bg-[#3F3E45] text-white">
               <div className="sticky top-0 flex gap-2 items-center justify-center flex-col pt-6  w-full bg-[#3F3E45]">
                 <div className="modal-action">
@@ -79,7 +79,6 @@ export default function Modal({ cryptoData }) {
                   <box-icon color="#ffffff" name="search"></box-icon>
                 </div>
               </div>
-              {cryptoData.length === 0 && <Loading />}
 
               <div className="flex flex-col justify-start w-full">
                 {filteredCoins.map((valor) => {

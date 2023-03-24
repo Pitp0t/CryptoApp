@@ -36,12 +36,12 @@ export default function Transaccion({ fecha, venta, id, walletId, type, value, q
           <h2>{formatedValue.format(value)} USD</h2>
         </div>
         <div className="flex gap-0 md:gap-2 ">
-          <button
+          {/* <button
             onClick={handleClick}
             className="  bg-[#faa018] transition-all shadow-md hover:ring-2  ring-[#faa018]  h-10 w-10 rounded-full flex justify-center items-center scale-75 md:scale-100 origin-right"
           >
             <box-icon color="#ffffff" type="solid" name="edit-alt"></box-icon>
-          </button>
+          </button> */}
           <button
             onClick={() => deleteTransaction(walletId, id)}
             className="  bg-[#faa018] transition-all shadow-md hover:ring-2  ring-[#faa018] h-10 w-10 rounded-full flex justify-center items-center scale-75 md:scale-100 origin-right"

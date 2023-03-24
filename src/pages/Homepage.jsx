@@ -10,7 +10,6 @@ export default function Homepage() {
   const { createWallet, carterasCreada } = useContext(WalletContext);
 
   useEffect(() => {
-    console.log("FETCH DATA HOMEPAGE");
     getCryptoData();
   }, []);
 
@@ -30,7 +29,18 @@ export default function Homepage() {
       </div>
       <div className="carteras">
         {carterasCreada.map((valor) => {
-          return <Cartera transactions={valor.transactions} cryptoData={cryptoData} key={valor.id} id={valor.id} balance={valor.balance} />;
+          return (
+            <Cartera
+              transactions={valor.transactions}
+              coins={valor.coins}
+              cryptoData={cryptoData}
+              name={valor.name}
+              key={valor.id}
+              id={valor.id}
+              balance={valor.balance}
+              total={valor.total}
+            />
+          );
         })}
       </div>
     </main>

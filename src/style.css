@@ -48,7 +48,7 @@ input[type=number] {
     overflow-x: scroll;
     margin: auto;
     padding: 3em 2em 7em 1em;
-    gap: 10px;
+    gap: 20px;
     scroll-snap-type: both mandatory;
   }
   .carteras .cartera {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Coin from "../assets/coin2.png";
 import { WalletContext } from "../context/WalletContext";
 
-export default function Cartera({ transactions, id, balance, cryptoData }) {
+export default function Cartera({ transactions, id, balance, cryptoData, total, coins, name }) {
   const { deleteWallet, editarCartera } = useContext(WalletContext);
   const [inputEditValue, setInputEditValue] = useState();
   const [toggleEdit, setToggleEdit] = useState(false);
@@ -21,11 +21,9 @@ export default function Cartera({ transactions, id, balance, cryptoData }) {
     notation: "compact",
   });
 
-  const typeActivos = transactions.map((valor) => valor.type);
-  const noDuplicatedActivos = new Set(typeActivos);
-  const noDuplicatedActivosArr = Array.from(noDuplicatedActivos);
-  const coins = cryptoData.filter((valor) => noDuplicatedActivosArr.includes(valor.symbol));
-  const coinsImgs = coins.map((valor) => valor.img);
+  const typeActivos = coins.map((valor) => valor.name.toLowerCase());
+  const coinsInCryptoData = cryptoData.filter((valor) => typeActivos.includes(valor.symbol.toLowerCase()));
+  const coinsImgs = coinsInCryptoData.map((valor) => valor.img);
 
   const everyImg = coinsImgs.map((valor, indx) => {
     if (indx < 4) {
@@ -45,59 +43,71 @@ export default function Cartera({ transactions, id, balance, cryptoData }) {
   );
 
   return (
-    <div id={id} className=" cartera flex flex-col items-center justify-center gap-5 relative bord rounded-lg bg-[#3F3E45]  text-white text-sm p-5 ">
-      <img className="h-40 w-40 object-contain" src={Coin} alt="" />
+    <div>
+      <div id={id} className=" cartera flex flex-col items-center justify-center gap-3 relative bord rounded-lg bg-[#3F3E45]  text-white text-sm p-5 ">
+        <h2 className={!toggleEdit ? "font-thin text-lg " : "invisible text-lg"}>{name}</h2>
+        {toggleEdit && (
+          <>
+            <div className=" absolute top-2   h-12 border-2 border-[#faa018] rounded-full py-1 px-4 flex justify-center items-center gap-2 mx-5">
+              <input
+                onChange={(e) => setInputEditValue(e.target.value)}
+                className="border-none bg-transparent outline-none text-lg text-center   text-[white]"
+                type="text"
+              />
+            </div>
+          </>
+        )}
+        <img className="h-40 w-40 object-contain" src={Coin} alt="" />
 
-      {toggleEdit && (
-        <>
-          <div className=" border-2 border-[#faa018] rounded-full p-1 flex justify-center items-center gap-2 mx-5">
-            <input
-              onChange={(e) => setInputEditValue(e.target.value)}
-              min="0"
-              className="border-none bg-transparent outline-none text-xl text-center  w-3/4 text-[white]"
-              type="number"
-            />
+        <div className="flex flex-col gap-4 justify-center items-center">
+          <h2 className="text-white font-medium text-2xl">{formatedValue.format(total)} $USD</h2>
+          <div className="flex h-6 justify-start items-center gap-2 text-3xl ">
+            {everyImg.length > 4 ? (
+              <>
+                {everyImg}
+                {dottedCoins}
+              </>
+            ) : (
+              everyImg
+            )}
+          </div>
+          <button
+            onClick={handleToggle}
+            className="absolute h-12 w-12 rounded-full flex justify-center items-center hover:bg-[#5866784d]  transition-colors top-2 left-2 cursor-pointer"
+          >
+            <box-icon color="#ffffff" type="solid" name="edit-alt"></box-icon>
+          </button>
+
+          {!toggleEdit && (
+            <button
+              onClick={() => deleteWallet(id)}
+              className="absolute h-12 w-12 rounded-full flex justify-center items-center hover:bg-[#5866784d]  transition-colors top-2 right-2 cursor-pointer"
+            >
+              <box-icon color="#ffffff" name="trash"></box-icon>
+            </button>
+          )}
+
+          {!toggleEdit && (
+            <Link
+              to={`wallet/${id}`}
+              className=" bg-[#faa018]  transition-all px-14 py-2 gap-2 font-bold shadow-md hover:ring-2  ring-[#faa018]  rounded-full flex justify-center items-center "
+            >
+              Ver cartera
+              <box-icon name="wallet" color="#ffffff"></box-icon>
+            </Link>
+          )}
+
+          {toggleEdit && (
             <button
               onClick={handleEditarCartera}
-              className=" h-8 w-8 rounded-full flex justify-center items-center hover:bg-[#faa018]  transition-colors top-2 left-2 cursor-pointer"
+              className=" bg-[#faa018]  transition-all px-14 py-2 gap-2 font-bold shadow-md hover:ring-2  ring-[#faa018]  rounded-full flex justify-center items-center "
             >
+              Guardar
               <box-icon name="save" color="#ffffff"></box-icon>
             </button>
-          </div>
-        </>
-      )}
-
-      {!toggleEdit && <h2 className="text-white font-medium text-xl">{formatedValue.format(balance)} $USD</h2>}
-      <div className="flex h-6 justify-start items-center gap-2 text-3xl ">
-        {everyImg.length > 4 ? (
-          <>
-            {everyImg}
-            {dottedCoins}
-          </>
-        ) : (
-          everyImg
-        )}
+          )}
+        </div>
       </div>
-      <button
-        onClick={handleToggle}
-        className="absolute h-12 w-12 rounded-full flex justify-center items-center hover:bg-[#5866784d]  transition-colors top-2 left-2 cursor-pointer"
-      >
-        <box-icon color="#ffffff" type="solid" name="edit-alt"></box-icon>
-      </button>
-      <button
-        onClick={() => deleteWallet(id)}
-        className="absolute h-12 w-12 rounded-full flex justify-center items-center hover:bg-[#5866784d]  transition-colors top-2 right-2 cursor-pointer"
-      >
-        <box-icon color="#ffffff" name="trash"></box-icon>
-      </button>
-
-      <Link
-        to={`wallet/${id}`}
-        className=" bg-[#faa018]  transition-all px-14 py-2 gap-2 font-bold shadow-md hover:ring-2  ring-[#faa018]  rounded-full flex justify-center items-center "
-      >
-        Ver cartera
-        <box-icon name="wallet" color="#ffffff"></box-icon>
-      </Link>
     </div>
   );
 }
