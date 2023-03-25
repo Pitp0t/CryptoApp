@@ -60,11 +60,17 @@ export default function Wallet() {
           </button> */}
 
           <div className=" flex justify-between   ">
-            <button className={toggleVender ? "text-white   w-1/2  " : " w-1/2  border-b-4  border-[#faa018] "} onClick={handleToggleComprar}>
+            <button
+              className={toggleVender ? "  text-white   w-1/2  " : " w-1/2   border-b-4  border-[#faa018]  botonComprarVender"}
+              onClick={handleToggleComprar}
+            >
               COMPRAR
             </button>
             {
-              <button className={toggleVender ? "   w-1/2  border-b-4  border-[#faa018]" : "text-white  w-1/2  "} onClick={handleToggleVender}>
+              <button
+                className={toggleVender ? " botonComprarVender  w-1/2  border-b-4  border-[#faa018]" : "text-white  w-1/2  "}
+                onClick={handleToggleVender}
+              >
                 VENDER
               </button>
             }
@@ -72,13 +78,13 @@ export default function Wallet() {
         </div>
 
         {singleWallet[0].coins.length > 0 && (
-          <div className="  bg-[#3F3E45] rounded-lg p-5 flex-wrap  md:px-10 my-5  text-white">
-            <div className="flex ">
-              {coinsImgsAndData.map((valor) => {
+          <div className="  bg-[#3F3E45] rounded-lg p-5  max-w-[100%] md:px-10 my-5  text-white">
+            <div className="flex  flex-wrap">
+              {coinsImgsAndData.map((valor, indx) => {
                 return (
-                  <div key={valor.name} className="flex flex-col justify-center items-center relative h-12 w-12 ">
+                  <div key={indx} className="flex flex-col justify-center items-center relative h-12 w-12 ">
                     {/* <h2>{valor.name}</h2> */}
-                    <img className="rounded-full w-10 h-10" src={valor.coinImg} alt={valor.name} />
+                    <img className="rounded-full w-9 h-9 md:w-10  md:h-10 " src={valor.coinImg} alt={valor.name} />
                     <div className="absolute top-0 right-0 bg-[#6c7b90b7] transition-all shadow-md hover:ring-2 p-2 ring-[#6c7b904d] h-5 w-5 rounded-full flex justify-center items-center">
                       <h2>{formatter.format(valor.quantity)}</h2>
                     </div>

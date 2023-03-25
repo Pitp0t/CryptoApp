@@ -18,7 +18,7 @@ export default function Homepage() {
 
   return (
     <main className="max-w-[1240px] mx-auto mt-24 ">
-      <div className="flex flex-col justify-center items-center gap-2 text-white">
+      <div className="flex flex-col   backdrop-blur md:backdrop-blur-none py-5   z-20  justify-center  items-center gap-2 w-[100%] text-white fixed bottom-0 sm:relative">
         <button
           onClick={createWallet}
           className="bg-[#faa018] transition-all shadow-md hover:ring-2  ring-[#faa018] h-12 w-12 rounded-full flex items-center justify-center"
@@ -27,7 +27,7 @@ export default function Homepage() {
         </button>
         <h2 className="font-medium">Crear Cartera</h2>
       </div>
-      <div className="carteras">
+      <div className="carteras z-10">
         {carterasCreada.map((valor) => {
           return (
             <Cartera

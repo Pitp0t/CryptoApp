@@ -100,8 +100,8 @@ const WalletPorvider = (props) => {
         const newBalance = wallet.balance - calculoMonedaValor;
         const allPreviousTransaction = wallet.transactions;
         const updatedTransactions = [
-          ...allPreviousTransaction,
           { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor, quantity: value },
+          ...allPreviousTransaction,
         ];
         console.log(wallet.total + calculoMonedaValor);
 
@@ -153,10 +153,11 @@ const WalletPorvider = (props) => {
         const newBalance = wallet.balance + calculoMonedaValor;
         const allPreviousTransaction = wallet.transactions;
         const updatedTransactions = [
-          ...allPreviousTransaction,
           { id: nanoid(), fecha: formattedDate, venta: true, type: typeOfCoin, value: calculoMonedaValor, quantity: value },
+          ...allPreviousTransaction,
         ];
-        console.log(wallet.total - calculoMonedaValor);
+
+        console.log(updatedCoins.length);
         if (updatedCoins.length === 0) {
           return { ...wallet, coins: updatedCoins, balance: newBalance, transactions: updatedTransactions, total: 0 };
         }
@@ -191,9 +192,16 @@ const WalletPorvider = (props) => {
         const prevTransaction = wallet.transactions.find((valor) => valor.id === id);
         const newBalance = wallet.balance - prevTransaction.value;
 
+        const maxValue = wallet.total;
+
         let updatedCoins = wallet.coins;
         const index = updatedCoins.findIndex((coin) => coin.name.toLowerCase() === typeOfCoin.toLowerCase());
-        if (index !== -1) updatedCoins[index].quantity = updatedCoins[index].quantity + Number(editedValue);
+        if (index !== -1 && editedValue < maxValue)
+          updatedCoins[index].quantity = updatedCoins[index].quantity - prevTransaction.quantity - Number(editedValue);
+        if (index !== -1 && editedValue > maxValue) {
+          alert("La venta no puede ser mayor a la cantidad que tenes");
+          return wallet;
+        }
 
         const updatedTransactions = [
           ...allPreviousTransaction,
@@ -217,7 +225,7 @@ const WalletPorvider = (props) => {
     const now = new Date();
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString();
-    const formattedDate = `${date} ${time}`;
+    const formattedDate = `${date} <br> ${time}`;
     const calculoMonedaValor = editedValue * selectedCoinDataEdit[0].price;
     const typeOfCoin = selectedCoinDataEdit[0].symbol;
 
@@ -227,9 +235,22 @@ const WalletPorvider = (props) => {
         const prevTransaction = wallet.transactions.find((valor) => valor.id === id);
         const newBalance = wallet.balance + prevTransaction.value;
 
+        const maxValue = wallet.coins.find((valor) => valor.name.toLowerCase() === typeOfCoin.toLowerCase());
+
         let updatedCoins = wallet.coins;
         const index = updatedCoins.findIndex((coin) => coin.name.toLowerCase() === typeOfCoin.toLowerCase());
-        if (index !== -1) updatedCoins[index].quantity = updatedCoins[index].quantity - Number(editedValue);
+
+        if (index !== -1 && editedValue < maxValue.quantity) {
+          console.log("menor");
+          console.log(prevTransaction.quantity);
+          console.log(updatedCoins[index].quantity);
+          updatedCoins[index].quantity = updatedCoins[index].quantity - prevTransaction.value - Number(editedValue);
+        }
+        if (index !== -1 && editedValue > maxValue.quantity) {
+          console.log("MAYOR");
+
+          updatedCoins[index].quantity = updatedCoins[index].quantity - prevTransaction.value + Number(editedValue);
+        }
 
         const updatedTransactions = [
           ...allPreviousTransaction,
