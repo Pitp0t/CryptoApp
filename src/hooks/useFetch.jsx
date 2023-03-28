@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export default function useFetch() {
   const [cryptoData, setCryptoData] = useState([]);
-  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const getCryptoData = async () => {
+  const API_COINGECKO = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
+
+  const getCryptoData = useCallback(async () => {
     try {
-      const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false");
-      if (!res.ok) setError("Network issue");
+      setIsLoading(true);
+      const res = await fetch(API_COINGECKO);
+      if (!res.ok) {
+        throw new Error("Network issue");
+      }
       const resJson = await res.json();
-
       setCryptoData(
         resJson.map((valor) => {
           return {
@@ -21,17 +26,19 @@ export default function useFetch() {
           };
         })
       );
-      console.log("FETCHIING DATA");
+      console.log("FETCHING DATA");
     } catch (error) {
       console.log(error);
-      return setError(error.message);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, []);
 
   return {
     getCryptoData,
     cryptoData,
-    setCryptoData,
+    isLoading,
     error,
   };
 }

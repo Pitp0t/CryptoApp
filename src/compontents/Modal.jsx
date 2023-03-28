@@ -7,6 +7,8 @@ import Loading from "./Loading";
 
 export default function Modal({ cryptoData }) {
   const { setSelectedCoinData, selectedCoinData } = useContext(WalletContext);
+  const { isLoading } = useFetch();
+
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,7 +81,6 @@ export default function Modal({ cryptoData }) {
                   <box-icon color="#ffffff" name="search"></box-icon>
                 </div>
               </div>
-
               <div className="flex flex-col justify-start w-full">
                 {filteredCoins.map((valor) => {
                   return (

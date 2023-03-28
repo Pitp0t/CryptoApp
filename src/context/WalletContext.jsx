@@ -103,7 +103,6 @@ const WalletPorvider = (props) => {
           { id: nanoid(), fecha: formattedDate, venta: false, type: typeOfCoin, value: calculoMonedaValor, quantity: value },
           ...allPreviousTransaction,
         ];
-        console.log(wallet.total + calculoMonedaValor);
 
         return { ...wallet, coins: updatedCoins, balance: newBalance, transactions: updatedTransactions, total: wallet.total + calculoMonedaValor };
       }
@@ -157,7 +156,6 @@ const WalletPorvider = (props) => {
           ...allPreviousTransaction,
         ];
 
-        console.log(updatedCoins.length);
         if (updatedCoins.length === 0) {
           return { ...wallet, coins: updatedCoins, balance: newBalance, transactions: updatedTransactions, total: 0 };
         }
@@ -241,14 +239,9 @@ const WalletPorvider = (props) => {
         const index = updatedCoins.findIndex((coin) => coin.name.toLowerCase() === typeOfCoin.toLowerCase());
 
         if (index !== -1 && editedValue < maxValue.quantity) {
-          console.log("menor");
-          console.log(prevTransaction.quantity);
-          console.log(updatedCoins[index].quantity);
           updatedCoins[index].quantity = updatedCoins[index].quantity - prevTransaction.value - Number(editedValue);
         }
         if (index !== -1 && editedValue > maxValue.quantity) {
-          console.log("MAYOR");
-
           updatedCoins[index].quantity = updatedCoins[index].quantity - prevTransaction.value + Number(editedValue);
         }
 

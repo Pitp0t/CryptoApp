@@ -4,10 +4,13 @@ import Error from "../compontents/Error";
 import useFetch from "../hooks/useFetch";
 import { WalletContext } from "../context/WalletContext";
 import Cartera from "../compontents/Cartera";
+import { motion } from "framer-motion";
 
 export default function Homepage() {
-  const { getCryptoData, cryptoData, error } = useFetch();
+  const { getCryptoData, cryptoData, error, isLoading } = useFetch();
   const { createWallet, carterasCreada } = useContext(WalletContext);
+
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   useEffect(() => {
     getCryptoData();
@@ -27,7 +30,7 @@ export default function Homepage() {
         </button>
         <h2 className="font-medium">Crear Cartera</h2>
       </div>
-      <div className="carteras z-10">
+      <motion.div className="carteras z-10">
         {carterasCreada.map((valor) => {
           return (
             <Cartera
@@ -39,10 +42,11 @@ export default function Homepage() {
               id={valor.id}
               balance={valor.balance}
               total={valor.total}
+              isMobile={isMobile}
             />
           );
         })}
-      </div>
+      </motion.div>
     </main>
   );
 }

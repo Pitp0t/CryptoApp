@@ -6,7 +6,7 @@ export default function Loading() {
       <div>
         <h2 className="text-xl font-bold text-white">Loading</h2>
       </div>
-      <button className="btn bg-[#faa018] rounded-full btn-square loading"></button>
+      <button className="btn bg-[#faa018] border-none rounded-full btn-square loading"></button>
     </div>
   );
 }

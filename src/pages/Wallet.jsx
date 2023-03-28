@@ -9,7 +9,7 @@ import Loading from "../compontents/Loading";
 export default function Wallet() {
   const { carterasCreada, comprar, vender } = useContext(WalletContext);
   const { walletId } = useParams();
-  const { cryptoData, getCryptoData } = useFetch();
+  const { cryptoData, getCryptoData, isLoading } = useFetch();
 
   const [toggleVender, setToggleVender] = useState(false);
 
